@@ -1,6 +1,16 @@
 ﻿#pragma once
+
+//The obscure namespace name is meant to avoid them being shown alongside with the intended names in the auto-completion list.
+
 #include "init.hpp"
+using ImGui_Implbgfx_InitConfig = CGIMBGFX::InitConfig;
+using CGIMBGFX::ImGui_Implbgfx_Init;
 
-using CherryGrove_ImGui_Impl_bgfx::ImGui_Implbgfx_Init;
-using CherryGrove_ImGui_Impl_bgfx::ImGui_Implbgfx_Init_Config;
+#include "multiViewport.hpp"
+using CGIMBGFX::ImGui_Implbgfx_SupportsMultiViewport;
 
+#include "render.hpp"
+using CGIMBGFX::ImGui_Implbgfx_RenderDrawData;
+
+#include "shutdown.hpp"
+using CGIMBGFX::ImGui_Implbgfx_Shutdown;

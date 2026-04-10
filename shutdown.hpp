@@ -1,0 +1,25 @@
+﻿#pragma once
+#include "inclusions.hpp" // IWYU pragma: keep
+
+#include "render.hpp"
+
+namespace CGIMBGFX {
+    inline void ImGui_Implbgfx_Shutdown() noexcept {
+        ImGuiIO& io = ImGui::GetIO();
+        io.BackendFlags &= ~(ImGuiBackendFlags_RendererHasVtxOffset | ImGuiBackendFlags_RendererHasTextures | ImGuiBackendFlags_RendererHasViewports);
+        IM_DELETE(io.BackendRendererUserData);
+        io.BackendRendererName = nullptr;
+        io.BackendRendererUserData = nullptr;
+        ImGuiPlatformIO& platformIo = ImGui::GetPlatformIO();
+        for (ImTextureData* textureData : platformIo.Textures) if (textureData != nullptr && textureData->RefCount == 1) {
+            textureData->SetStatus(ImTextureStatus_WantDestroy);
+            internal::updateTexture(textureData);
+        }
+        ImGui::DestroyPlatformWindows();
+        platformIo.Renderer_CreateWindow = nullptr;
+        platformIo.Renderer_DestroyWindow = nullptr;
+        platformIo.Renderer_SetWindowSize = nullptr;
+        platformIo.Renderer_RenderWindow = nullptr;
+        platformIo.Renderer_SwapBuffers = nullptr;
+    }
+}
