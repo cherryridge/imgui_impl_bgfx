@@ -7,7 +7,7 @@ using ImGui_Implbgfx_InitConfig = CGIMBGFX::InitConfig;
 using CGIMBGFX::ImGui_Implbgfx_Init;
 
 #include "multiViewport.hpp"
-using CGIMBGFX::ImGui_Implbgfx_SupportsMultiViewport;
+using CGIMBGFX::ImGui_Implbgfx_RendererSupportsMultiViewport;
 
 #include "render.hpp"
 using CGIMBGFX::ImGui_Implbgfx_RenderDrawData;

@@ -1,14 +1,20 @@
 ﻿#pragma once
 #include "inclusions.hpp" // IWYU pragma: keep
 
+#include "backendData.hpp"
 #include "render.hpp"
 
 namespace CGIMBGFX {
     inline void ImGui_Implbgfx_Shutdown() noexcept {
         ImGuiIO& io = ImGui::GetIO();
         io.BackendFlags &= ~(ImGuiBackendFlags_RendererHasVtxOffset | ImGuiBackendFlags_RendererHasTextures | ImGuiBackendFlags_RendererHasViewports);
-        IM_DELETE(io.BackendRendererUserData);
         io.BackendRendererName = nullptr;
+        auto* backendData = const_cast<BackendData*>(ImGui_Implbgfx_extras_GetBackendData());
+        if (backendData != nullptr && backendData->autoShaderSampler) {
+            if (bgfx::isValid(backendData->shader)) bgfx::destroy(backendData->shader);
+            if (bgfx::isValid(backendData->sampler)) bgfx::destroy(backendData->sampler);
+        }
+        IM_DELETE(io.BackendRendererUserData);
         io.BackendRendererUserData = nullptr;
         ImGuiPlatformIO& platformIo = ImGui::GetPlatformIO();
         for (ImTextureData* textureData : platformIo.Textures) if (textureData != nullptr && textureData->RefCount == 1) {

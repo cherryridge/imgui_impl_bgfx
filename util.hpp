@@ -1,6 +1,6 @@
 ﻿#pragma once
+#include <cstdint>
 #include <limits>
-#include "inclusions.hpp" // IWYU pragma: keep
 
 namespace CGIMBGFX::internal {
     typedef uint16_t u16;

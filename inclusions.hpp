@@ -18,12 +18,6 @@
     #include <bx/bx.h>
 #endif
 
-#ifdef CGIMBGFX_CHP__BX_ALLOCATOR_H
-    #include CGIMBGFX_CHP__BX_ALLOCATOR_H
-#else
-    #include <bx/allocator.h>
-#endif
-
 #ifdef CGIMBGFX_CHP__BX_MATH_H
     #include CGIMBGFX_CHP__BX_MATH_H
 #else

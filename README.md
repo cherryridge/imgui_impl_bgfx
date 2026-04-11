@@ -13,15 +13,13 @@ An [ImGui](https://github.com/ocornut/imgui) adapter for the [bgfx](https://gith
 
 ## Before Using
 
-### Bring Your Own Shader
+### Bring Your Own Render Pipeline
 
-**Bringing your own shader and texture sampler to the backend is the expected default**. This backend is for large programs where shader and uniform count matters.
-
-But if you really don't want to be bothered, initialize the backend with `.useEmbeddedShader = true`. We will use the shader in the `shader` directory.
+Bringing your own shader and texture sampler to the backend is the expected default. But if you don't want to be bothered, initialize the backend with `.autoShaderSampler = true`. We will use the shader in the `shader` directory and create a sampler.
 
 ### Platform Bridge
 
-**This is only for multiple viewport support**. If you don't need it, skip this section.
+**This is only for multiple viewport support**. If you don't need it, initialize the backend with `.enableMultiViewport = false`, and skip this section.
 
 A set of callback functions that we specifically ask you to provide that cross the bridge from bgfx to the platform (backend).
 

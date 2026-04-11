@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "imgui.h"
 #include "inclusions.hpp" // IWYU pragma: keep
 
 #include "backendData.hpp"
@@ -10,7 +9,7 @@ namespace CGIMBGFX {
     typedef uint16_t u16;
     
     //warning: This function checks ONLY if the RENDERER backend supports multi-viewport, DO NOT use this function to determine if multi-viewport is supported. You should also check if the PLATFORM backend supports it. According to ChatGPT, multi-viewport doesn't work on Wayland and is problematic on X11, REGARDLESS of whether you're using platform wrappers like SDL or not.
-    [[nodiscard]] inline bool ImGui_Implbgfx_SupportsMultiViewport() noexcept {
+    [[nodiscard]] inline bool ImGui_Implbgfx_RendererSupportsMultiViewport() noexcept {
         const bgfx::Caps* caps = bgfx::getCaps();
         return caps != nullptr && (caps->supported & BGFX_CAPS_SWAP_CHAIN) != 0;
     }
@@ -29,7 +28,7 @@ namespace CGIMBGFX {
                 const auto* data = CGIMBGFX::ImGui_Implbgfx_extras_GetBackendData();
                 IM_ASSERT(data != nullptr);
                 
-                if (!ImGui_Implbgfx_SupportsMultiViewport()) return;
+                if (!ImGui_Implbgfx_RendererSupportsMultiViewport()) return;
                 
                 void* platformHandle = data->platformBridge.getNativeWindowHandle(*viewport);
                 if (platformHandle == nullptr) return;
@@ -146,12 +145,12 @@ namespace CGIMBGFX {
                 }
                 else bgfx::setViewClear(viewportData->viewId, BGFX_CLEAR_NONE);
                 
-                CGIMBGFX::ImGui_Implbgfx_RenderDrawData(drawData, viewportData->viewId);
+                CGIMBGFX::internal::render(drawData, viewportData->viewId);
             }
         }
         
         inline void initMultiViewport() noexcept {
-            if (!CGIMBGFX::ImGui_Implbgfx_SupportsMultiViewport()) return;
+            if (!CGIMBGFX::ImGui_Implbgfx_RendererSupportsMultiViewport()) return;
             ImGuiIO& io = ImGui::GetIO();
             io.BackendFlags |= ImGuiBackendFlags_RendererHasViewports;
             

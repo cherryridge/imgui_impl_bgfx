@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <cstdint>
-#include "bgfx/bgfx.h"
+#include <cstring>
 #include "inclusions.hpp" // IWYU pragma: keep
 
 #include "shader/embedded.vert_dx11.h"
@@ -19,6 +19,7 @@
 
 namespace CGIMBGFX::internal {
     typedef uint8_t u8;
+    using std::memcpy;
 
     [[nodiscard]] inline bool loadEmbeddedShader(bgfx::ProgramHandle& result) noexcept {
         const u8* vertData = nullptr;
@@ -59,16 +60,20 @@ namespace CGIMBGFX::internal {
             case Vulkan:
                 vertData = embedded_vert_vulkan;
                 vertSize = sizeof(embedded_vert_vulkan);
+                fragData = embedded_frag_vulkan;
+                fragSize = sizeof(embedded_frag_vulkan);
                 break;
             default:
                 return false;
         }
         const bgfx::Memory* vertMemory = bgfx::alloc(vertSize + 1);
         vertMemory->data[vertMemory->size - 1] = '\0';
+        memcpy(vertMemory->data, vertData, vertSize);
         const auto vertHandle = bgfx::createShader(vertMemory);
         if (!bgfx::isValid(vertHandle)) return false;
         const bgfx::Memory* fragMemory = bgfx::alloc(fragSize + 1);
         fragMemory->data[fragMemory->size - 1] = '\0';
+        memcpy(fragMemory->data, fragData, fragSize);
         const auto fragHandle = bgfx::createShader(fragMemory);
         if (!bgfx::isValid(fragHandle)) {
             bgfx::destroy(vertHandle);

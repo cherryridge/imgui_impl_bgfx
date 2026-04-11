@@ -1,12 +1,14 @@
 ﻿#pragma once
-#include <limits>
 #include <vector>
+#include <utility>
 #include "inclusions.hpp" // IWYU pragma: keep
+
+#include "util.hpp"
 
 namespace CGIMBGFX {
     typedef uint8_t u8;
     typedef uint16_t u16;
-    using std::numeric_limits, std::vector;
+    using std::vector, std::pair;
 
     namespace detail {
         [[nodiscard]] inline void* default_GetNativeWindowHandle(const ImGuiViewport& viewport) noexcept { return viewport.PlatformHandleRaw; }
@@ -24,14 +26,14 @@ namespace CGIMBGFX {
     };
 
     struct BackendData {
-        bx::AllocatorI* allocator{nullptr};
         bgfx::ProgramHandle shader = BGFX_INVALID_HANDLE;
         bgfx::UniformHandle sampler = BGFX_INVALID_HANDLE;
+        bgfx::FrameBufferHandle renderToFrameBuffer = BGFX_INVALID_HANDLE;
         bgfx::ViewId startingViewId{1};
         //Uses u8 instead of bool so we don't need to pay the performance cost of a dynamic bitset.
         vector<u8> viewIdUsed;
-        bgfx::FrameBufferHandle renderToFrameBuffer = BGFX_INVALID_HANDLE;
         bgfx::VertexLayout layout;
+        bool autoShaderSampler{false};
         PlatformBridge platformBridge;
     };
 
@@ -42,12 +44,12 @@ namespace CGIMBGFX {
     namespace internal {
         [[nodiscard]] inline bgfx::ViewId allocateViewId() noexcept {
             auto* data = const_cast<BackendData*>(CGIMBGFX::ImGui_Implbgfx_extras_GetBackendData());
-            if (data == nullptr || data->viewIdUsed.size() == 0) return bgfx::ViewId(numeric_limits<u16>::max());
+            if (data == nullptr || data->viewIdUsed.size() == 0) return bgfx::ViewId(U16_MAX);
             for (u16 i = 0; i < data->viewIdUsed.size(); i++) if (!data->viewIdUsed[i]) {
                 data->viewIdUsed[i] = true;
                 return data->startingViewId + i;
             }
-            return bgfx::ViewId(numeric_limits<u16>::max());
+            return bgfx::ViewId(U16_MAX);
         }
 
         inline void releaseViewId(bgfx::ViewId viewId) noexcept {
