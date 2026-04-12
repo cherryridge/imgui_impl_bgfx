@@ -140,7 +140,7 @@ namespace CGIMBGFX {
                 bgfx::setViewFrameBuffer(viewportData->viewId, viewportData->frameBuffer);
                 
                 if ((viewport->Flags & ImGuiViewportFlags_NoRendererClear) == 0) {
-                    bgfx::setViewClear(viewportData->viewId, BGFX_CLEAR_COLOR, 0x000000FF, 1.0f, 0);
+                    bgfx::setViewClear(viewportData->viewId, BGFX_CLEAR_COLOR, 0x00000000, 1.0f, 0);
                     bgfx::touch(viewportData->viewId);
                 }
                 else bgfx::setViewClear(viewportData->viewId, BGFX_CLEAR_NONE);
