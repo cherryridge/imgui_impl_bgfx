@@ -278,8 +278,13 @@ namespace CGIMBGFX {
         const auto* backendData = ImGui_Implbgfx_extras_GetBackendData();
         if (backendData == nullptr) return;
 
-        if (bgfx::isValid(backendData->renderToFrameBuffer)) bgfx::setViewFrameBuffer(backendData->startingViewId, backendData->renderToFrameBuffer);
-        if (drawData->OwnerViewport == nullptr || (drawData->OwnerViewport->Flags & ImGuiViewportFlags_NoRendererClear) == 0) {
+        const bool renderToFrameBuffer = bgfx::isValid(backendData->renderToFrameBuffer);
+        if (renderToFrameBuffer) bgfx::setViewFrameBuffer(backendData->startingViewId, backendData->renderToFrameBuffer);
+
+        const ImGuiViewport* ownerViewport = drawData != nullptr ? drawData->OwnerViewport : nullptr;
+        const bool isMainViewport = ownerViewport == nullptr || ownerViewport == ImGui::GetMainViewport();
+        //Don't clear the main viewport. Doing this will clear the entire screen, including the main content of the application.
+        if (renderToFrameBuffer || (!isMainViewport && (ownerViewport->Flags & ImGuiViewportFlags_NoRendererClear) == 0)) {
             bgfx::setViewClear(backendData->startingViewId, BGFX_CLEAR_COLOR, 0x00000000, 1.0f, 0);
             bgfx::touch(backendData->startingViewId);
         }
