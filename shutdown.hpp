@@ -14,7 +14,7 @@ namespace CGIMBGFX {
             if (bgfx::isValid(backendData->shader)) bgfx::destroy(backendData->shader);
             if (bgfx::isValid(backendData->sampler)) bgfx::destroy(backendData->sampler);
         }
-        IM_DELETE(io.BackendRendererUserData);
+        IM_DELETE(reinterpret_cast<BackendData*>(io.BackendRendererUserData));
         io.BackendRendererUserData = nullptr;
         ImGuiPlatformIO& platformIo = ImGui::GetPlatformIO();
         for (ImTextureData* textureData : platformIo.Textures) if (textureData != nullptr && textureData->RefCount == 1) {
