@@ -18,6 +18,8 @@ namespace CGIMBGFX {
         io.BackendRendererUserData = nullptr;
         ImGuiPlatformIO& platformIo = ImGui::GetPlatformIO();
         for (ImTextureData* textureData : platformIo.Textures) if (textureData != nullptr && textureData->RefCount == 1) {
+            //Shutdown bypasses the ImGui frame tick that normally increments this before WantDestroy is processed.
+            textureData->UnusedFrames = 1;
             textureData->SetStatus(ImTextureStatus_WantDestroy);
             internal::updateTexture(textureData);
         }
