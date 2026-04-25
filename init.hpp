@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <algorithm>
 #include <vector>
 #include "inclusions.hpp" // IWYU pragma: keep

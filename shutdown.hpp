@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "inclusions.hpp" // IWYU pragma: keep
 
 #include "backendData.hpp"

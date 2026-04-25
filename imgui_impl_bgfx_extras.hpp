@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "backendData.hpp"
 
 using ImGui_Implbgfx_extras_BackendData = CGIMBGFX::BackendData;

@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string] $_shaderc = "../../../../libs/bgfx/release/bin/shaderc.exe",
     [string] $_bgfxSource = "../../../../libs/bgfx/source"
 )

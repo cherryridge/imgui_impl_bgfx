@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #ifdef CGIMBGFX_CHP__IMGUI_H
     #include CGIMBGFX_CHP__IMGUI_H

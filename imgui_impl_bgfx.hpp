@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 //The obscure namespace name is meant to avoid them being shown alongside with the intended names in the auto-completion list.
 
